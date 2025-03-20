@@ -385,6 +385,52 @@ public int countSuccessfulMoves(String S) {
         }
         return result;
     }
+
+    public long maximumSubarraySum(int[] nums, int k) {
+        // use sliding window
+        // long res = 0;
+        // long currentSum = 0;
+        // int begin = 0;
+        // int end = 0;
+        // HashMap<Integer, Integer> map = new HashMap<>();
+        // while (end < nums.length) {
+        //     int currentNum = nums[end];
+        //     currentSum += currentNum;
+        //     int lastOcr = map.getOrDefault(currentNum, -1);
+        //     while (begin <= lastOcr || end - begin + 1 > k) {
+        //         currentSum -= nums[begin];
+        //         begin++;
+        //     }
+
+        //     map.put(currentNum, end);
+        //     if (end - begin + 1 == k) {
+        //         res = Math.max(res, currentSum);
+        //     }
+        //     end++;
+        // }
+        // return res;
+        int currentSum = 0;
+        long maxSum = Long.MIN_VALUE;
+        int l = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for (int r = 0; r < nums.length; r++) {
+            while (set.contains(nums[r]) || r - l + 1 > k) {
+                currentSum -= nums[l];
+                set.remove(nums[l]);
+                l++;
+            }
+            currentSum += nums[r];
+            set.add(nums[r]);
+            // if (r - l + 1 > k) {
+            //     currentSum -= nums[l];
+            //     l++;
+            // }
+            if (set.size() == k) {
+                maxSum = Math.max(maxSum, currentSum);
+            }
+        }
+        return maxSum == Long.MIN_VALUE ? 0 : maxSum;
+    }
 }
 
  class Counter {
